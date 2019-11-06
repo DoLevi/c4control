@@ -1,12 +1,16 @@
 package de.untenrechts.c4control;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
 import de.untenrechts.c4control.init.ModBlocks;
 
 @Mod(modid = C4ControlMod.MODID, name = C4ControlMod.NAME, version = C4ControlMod.VERSION)
 public class C4ControlMod {
 	
-	public static final String NAME = "C 4 Control";
+	public static final String NAME = "C for Control";
 	public static final String MODID = "c4control";
 	public static final String VERSION = "1.7.10-0.0.1";
 
