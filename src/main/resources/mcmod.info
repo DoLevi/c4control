@@ -1,13 +1,13 @@
 [
 {
-  "modid": "c4control",
-  "name": "C 4 Control",
-  "description": "Mod designed like the anime 'C: The Money of Soul and Possibility Control'.",
+  "modid": "examplemod",
+  "name": "Example Mod",
+  "description": "Example placeholder mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["DoLevi"],
+  "authorList": ["ExampleDude"],
   "credits": "The Forge and FML guys, for making this example",
   "logoFile": "",
   "screenshots": [],
