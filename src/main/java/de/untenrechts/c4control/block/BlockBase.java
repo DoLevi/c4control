@@ -23,20 +23,13 @@ public class BlockBase extends Block {
         setRegistryName(this.name);
     }
 
-    public static void registerItemModel(ItemBlock itemBlock) {
-        ResourceLocation registryName = itemBlock.getRegistryName();
-        if (registryName != null) {
-            C4Control.proxy.registerItemRenderer(itemBlock, 0, registryName.toString());
-        }
-        String error = String.format("registryName for %s has been initialized poorly.",
-                itemBlock);
-        throw new IllegalStateException(error);
+    public void registerItemModel(ItemBlock itemBlock) {
+        C4Control.proxy.registerItemRenderer(itemBlock, 0, name);
     }
 
     public Item createItemBlock() {
         ResourceLocation registryName = getRegistryName();
         if (registryName != null) {
-            // Or fix this
             return new ItemBlock(this).setRegistryName(registryName);
         }
         String error = String.format("registryName for %s has been initialized poorly.", name);

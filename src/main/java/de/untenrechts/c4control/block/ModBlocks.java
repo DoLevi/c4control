@@ -22,19 +22,17 @@ public class ModBlocks {
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
-        registry.registerAll(
-                blocks.stream()
-                        .map(BlockBase::createItemBlock)
-                        .toArray(Item[]::new)
-        );
         blocks.forEach(block -> registry.registerAll(block.createItemBlock()));
+        // alternative implementation:
+        //registry.registerAll(
+        //        blocks.stream()
+        //                .map(BlockBase::createItemBlock)
+        //                .toArray(Item[]::new)
+        //);
     }
 
     public static void registerModels() {
-        blocks.stream()
-                .map(BlockBase::createItemBlock)
-                // Either fix this
-                .forEach(BlockBase::registerItemModel);
+        blocks.forEach(block -> block.registerItemModel(new ItemBlock(block)));
     }
 
 }
