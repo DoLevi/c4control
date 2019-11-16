@@ -1,5 +1,5 @@
 # Items
-item.item_yen.name=Yen Banknote
+item.c4control.item_midas_note.name=Midas Banknote
 
 # Blocks
 tile.block_atm.name=ATM
