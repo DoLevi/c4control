@@ -1,10 +1,9 @@
 # Gradle
-/.gradle
-/build
+/gradle/
+/build/
+/run/
 
-# idea
-/.idea
-*.iml
-*.ipr
-*iws
+/.gradle/
 
+# JetBrains
+/.idea/
