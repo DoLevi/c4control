@@ -4,30 +4,28 @@ import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import java.util.UUID;
-
 public class DirectChargeMessage implements IMessage {
 
-    private static final String ENTITY_ID_KEY = "entityPlayerUUID";
+    private static final String ENTITY_ID_KEY = "entityPlayerID";
     private static final String CHARGE_MULTIPLIER_KEY = "chargeMultiplier";
     private static final String ACTIVE_CHARGE_VALUE = "activeChargeValue";
 
-    private UUID entityPlayerUUID;
+    private int entityPlayerID;
     private float chargeMultiplier;
     private float activeChargeValue;
 
     public DirectChargeMessage() {
     }
 
-    public DirectChargeMessage(float chargeMultiplier, float activeChargeValue, UUID entityPlayerUUID) {
-        this.entityPlayerUUID = entityPlayerUUID;
+    public DirectChargeMessage(int entityPlayerID, float chargeMultiplier, float activeChargeValue) {
+        this.entityPlayerID = entityPlayerID;
         this.chargeMultiplier = chargeMultiplier;
         this.activeChargeValue = activeChargeValue;
     }
@@ -35,7 +33,7 @@ public class DirectChargeMessage implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         NBTTagCompound tag = ByteBufUtils.readTag(buf);
-        entityPlayerUUID = tag.getUniqueId(ENTITY_ID_KEY);
+        entityPlayerID = tag.getInteger(ENTITY_ID_KEY);
         chargeMultiplier = tag.getFloat(CHARGE_MULTIPLIER_KEY);
         activeChargeValue = tag.getFloat(ACTIVE_CHARGE_VALUE);
     }
@@ -43,7 +41,7 @@ public class DirectChargeMessage implements IMessage {
     @Override
     public void toBytes(ByteBuf buf) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setUniqueId(ENTITY_ID_KEY, entityPlayerUUID);
+        tag.setInteger(ENTITY_ID_KEY, entityPlayerID);
         tag.setFloat(CHARGE_MULTIPLIER_KEY, chargeMultiplier);
         tag.setFloat(ACTIVE_CHARGE_VALUE, activeChargeValue);
 
@@ -54,9 +52,9 @@ public class DirectChargeMessage implements IMessage {
 
         @Override
         public IMessage onMessage(DirectChargeMessage message, MessageContext ctx) {
-            EntityPlayer targetEntity = Minecraft.getMinecraft()
+            Entity targetEntity = Minecraft.getMinecraft()
                     .world
-                    .getPlayerEntityByUUID(message.entityPlayerUUID);
+                    .getEntityByID(message.entityPlayerID);
 
             IEntrepreneur entrepreneur
                     = targetEntity.getCapability(EntrepreneurProvider.entrepreneur, null);

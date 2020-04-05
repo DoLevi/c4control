@@ -15,6 +15,7 @@ public class Entrepreneur implements IEntrepreneur {
     private Float chargeMultiplier;
     private Float activeChargeValue;
     private Long lastChargeStart;
+    private boolean dischargeEnabled;
 
     @Override
     public boolean isEntrepreneur() {
@@ -72,22 +73,23 @@ public class Entrepreneur implements IEntrepreneur {
 
     @Override
     public void stopCharge() {
-        long chargeDiff = System.nanoTime() - lastChargeStart;
+        long nanosCharged = System.nanoTime() - lastChargeStart;
         lastChargeStart = null;
 
-        float chargedSeconds = chargeDiff / 1_000_000_000f;
-        float addedChargeValue = chargedSeconds * chargeMultiplier;
+        activeChargeValue = calcNewActiveChargeValue(nanosCharged);
+    }
+
+    @Override
+    public void setDischargeEnabled(boolean dischargeEnabled) {
+        this.dischargeEnabled = dischargeEnabled;
+    }
+
+    private float calcNewActiveChargeValue(long nanosCharged) {
+        float effectiveChargeMultiplier = dischargeEnabled ? - chargeMultiplier : chargeMultiplier;
+        float addedChargeValue = nanosCharged / 1_000_000_000f * effectiveChargeMultiplier;
+
         float attemptedChargeValue = activeChargeValue + addedChargeValue;
-        activeChargeValue = Math.min(attemptedChargeValue, accountBalance);
-    }
-
-    @Override
-    public void startDischarge() {
-
-    }
-
-    @Override
-    public void stopDischarge() {
-
+        // Minimum charge value is one, maximum charge value may not exceed account balance
+        return Math.max(1, Math.min(attemptedChargeValue, accountBalance));
     }
 }

@@ -21,8 +21,7 @@ public interface IEntrepreneur {
     void startCharge();
     void stopCharge();
 
-    void startDischarge();
-    void stopDischarge();
+    void setDischargeEnabled(boolean dischargeEnabled);
 
     default float getExpectedDamage() {
         return getActiveChargeValue() * DAMAGE_PER_VALUE_UNIT;
