@@ -32,7 +32,7 @@ versioner {
         patch = 0
     }
     pattern {
-        pattern = "1.12.2-%M.%m.%p-%c"
+        pattern = "1.12.2-%M.%m.%p.%c"
     }
 }
 
