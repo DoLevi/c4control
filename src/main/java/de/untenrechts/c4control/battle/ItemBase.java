@@ -1,4 +1,4 @@
-package de.untenrechts.c4control.overworld;
+package de.untenrechts.c4control.battle;
 
 import de.untenrechts.c4control.C4Control;
 import net.minecraft.creativetab.CreativeTabs;

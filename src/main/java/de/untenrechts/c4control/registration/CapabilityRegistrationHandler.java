@@ -1,4 +1,4 @@
-package de.untenrechts.c4control.mod;
+package de.untenrechts.c4control.registration;
 
 import de.untenrechts.c4control.C4Control;
 import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;

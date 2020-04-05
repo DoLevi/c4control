@@ -1,6 +1,5 @@
-package de.untenrechts.c4control.mod;
+package de.untenrechts.c4control.registration;
 
-import de.untenrechts.c4control.overworld.ModItems;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;

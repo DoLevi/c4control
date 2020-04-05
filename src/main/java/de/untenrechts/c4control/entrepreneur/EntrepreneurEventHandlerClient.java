@@ -2,7 +2,7 @@ package de.untenrechts.c4control.entrepreneur;
 
 import de.untenrechts.c4control.network.C4ControlPacketHandler;
 import de.untenrechts.c4control.network.DirectShiftMessage;
-import de.untenrechts.c4control.overworld.ItemDirect;
+import de.untenrechts.c4control.battle.ItemDirect;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

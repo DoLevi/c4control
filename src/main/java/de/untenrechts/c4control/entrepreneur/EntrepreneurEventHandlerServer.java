@@ -1,6 +1,6 @@
 package de.untenrechts.c4control.entrepreneur;
 
-import de.untenrechts.c4control.overworld.ItemDirect;
+import de.untenrechts.c4control.battle.ItemDirect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

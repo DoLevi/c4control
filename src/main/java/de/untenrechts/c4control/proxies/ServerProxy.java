@@ -4,7 +4,7 @@ import de.untenrechts.c4control.entrepreneur.Entrepreneur;
 import de.untenrechts.c4control.entrepreneur.EntrepreneurEventHandlerServer;
 import de.untenrechts.c4control.entrepreneur.EntrepreneurStorage;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
-import de.untenrechts.c4control.mod.CapabilityRegistrationHandler;
+import de.untenrechts.c4control.registration.CapabilityRegistrationHandler;
 import de.untenrechts.c4control.network.C4ControlPacketHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
