@@ -1,7 +1,14 @@
 package de.untenrechts.c4control.entrepreneur;
 
 public interface IEntrepreneur {
-    float DAMAGE_PER_VALUE_UNIT = 0.004F;
+    /**
+     * These damage calculation constants will (approximately) result in:
+     * * 2 damage for a charge of 500
+     * * 40 damage for a charge of 300_000
+     */
+    double DMG_CALC_A_CONST = Math.pow(300_000 / Math.pow(500, 20), 1 / 19f);
+    double DMG_CALC_B_CONST = 1 / Math.log(Math.sqrt(500 * DMG_CALC_A_CONST));
+
     float DEFAULT_ACCOUNT_BALANCE = 10_000f;
     float DEFAULT_CHARGE_MULTIPLIER = 100f;
     float DEFAULT_ACTIVE_CHARGE_VALUE = 0;
@@ -24,7 +31,7 @@ public interface IEntrepreneur {
     void setDischargeEnabled(boolean dischargeEnabled);
 
     default float getExpectedDamage() {
-        return getActiveChargeValue() * DAMAGE_PER_VALUE_UNIT;
+        return (float) (DMG_CALC_B_CONST * Math.log(DMG_CALC_A_CONST * getActiveChargeValue()));
     }
 
     /**
