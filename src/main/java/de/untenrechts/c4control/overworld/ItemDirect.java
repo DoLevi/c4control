@@ -3,7 +3,6 @@ package de.untenrechts.c4control.overworld;
 import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
 import de.untenrechts.c4control.network.C4ControlPacketHandler;
-import de.untenrechts.c4control.network.DirectChargeMessage;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +14,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import javax.annotation.Nonnull;
 
@@ -38,7 +36,7 @@ public class ItemDirect extends ItemBase {
                 entrepreneur.startCharge();
 
                 playerIn.sendMessage(new TextComponentString(
-                        String.format("Starting to charge up from %s§mM§r",
+                        String.format("Starting to charge from %s§mM§r ...",
                                 entrepreneur.getActiveChargeValue())));
             }
             return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
@@ -54,17 +52,22 @@ public class ItemDirect extends ItemBase {
 
         if (entrepreneur.isEntrepreneur() && usedItem instanceof ItemDirect) {
             if (!worldIn.isRemote) {
-                entrepreneur.stopCharge();
-                IMessage msg = new DirectChargeMessage(entrepreneur.getChargeMultiplier(),
-                        entrepreneur.getActiveChargeValue(), entityLiving.getUniqueID());
-                C4ControlPacketHandler.INSTANCE.sendTo(msg, (EntityPlayerMP) entityLiving);
+                float previousChargeValue = entrepreneur.getActiveChargeValue();
 
-                entityLiving.sendMessage(new TextComponentString(
-                        String.format("Charged up to %s§mM§r",
-                                entrepreneur.getActiveChargeValue())));
-                entityLiving.sendMessage(new TextComponentString(
-                        String.format("Expected damage: %s",
-                                entrepreneur.getExpectedDamage())));
+                entrepreneur.stopCharge();
+                C4ControlPacketHandler.sendChargeToClient((EntityPlayerMP) entityLiving,
+                        entrepreneur.getChargeMultiplier(), entrepreneur.getActiveChargeValue());
+
+                String chargeValueDiff = String.format("%.2f",
+                        entrepreneur.getActiveChargeValue() - previousChargeValue);
+                String chargeMessage = String.format("Charged to %s§mM§r [%s§mM§r].",
+                        entrepreneur.getActiveChargeValue(), chargeValueDiff);
+                String damageMessage = String.format("Expected damage: %s",
+                        entrepreneur.getExpectedDamage());
+
+
+                entityLiving.sendMessage(new TextComponentString(chargeMessage));
+                entityLiving.sendMessage(new TextComponentString(damageMessage));
             }
         } else {
             super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);

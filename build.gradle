@@ -9,20 +9,31 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'io.freefair.gradle:lombok-plugin:5.0.0-rc6'
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "gradle.plugin.io.toolebox:gradle-git-versioner:1.4.0"
     }
 }
 apply plugin: "net.minecraftforge.gradle.forge"
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: "io.toolebox.git-versioner"
 
-version = "1.12.2-0.2.0"
 group = "de.untenrechts.c4control" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "c4control"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
+}
+
+versioner {
+    startFrom {
+        major = 0
+        minor = 2
+        patch = 0
+    }
+    pattern {
+        pattern = "1.12.2-%M.%m.%p-%c"
+    }
 }
 
 minecraft {

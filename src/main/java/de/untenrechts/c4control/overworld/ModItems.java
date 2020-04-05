@@ -1,7 +1,6 @@
 package de.untenrechts.c4control.overworld;
 
 import de.untenrechts.c4control.C4Control;
-import de.untenrechts.c4control.overworld.ItemDirect;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
