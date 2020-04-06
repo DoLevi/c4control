@@ -13,7 +13,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.Arrays;
 
 
-public class EntrepreneurEventHandlerClient {
+public class EntrepreneurEventHandlerClient extends EntrepreneurEventHandler {
 
     private static KeyBinding[] keyBindings = new KeyBinding[] {
             new KeyBinding("c4control.key.shift", Keyboard.KEY_LSHIFT, "c4control.category")
