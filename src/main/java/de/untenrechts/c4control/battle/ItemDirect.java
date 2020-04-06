@@ -3,6 +3,7 @@ package de.untenrechts.c4control.battle;
 import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
 import de.untenrechts.c4control.network.C4ControlPacketHandler;
+import de.untenrechts.c4control.registration.ItemBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

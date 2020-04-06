@@ -1,4 +1,4 @@
-package de.untenrechts.c4control.battle;
+package de.untenrechts.c4control.registration;
 
 import de.untenrechts.c4control.C4Control;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,6 +10,7 @@ public class ItemBase extends Item {
 
     public ItemBase(String name, CreativeTabs tab) {
         this.name = name;
+
         setUnlocalizedName(name);
         setRegistryName(C4Control.MOD_ID, name);
         setCreativeTab(tab);
