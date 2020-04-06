@@ -16,11 +16,15 @@ public class C4Control {
     public static final String MOD_NAME = "C4Control";
     public static final String MOD_VERSION = "0.2.0";
 
+    @Mod.Instance
+    public static C4Control INSTANCE;
+
     @SidedProxy(serverSide = "de.untenrechts.c4control.proxies.ServerProxy", clientSide = "de.untenrechts.c4control.proxies.ClientProxy")
     public static IProxy proxy;
 
     public static Logger log;
 
+    @SuppressWarnings("unused")
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         log = event.getModLog();
@@ -28,12 +32,14 @@ public class C4Control {
         proxy.preInit(event);
     }
 
+    @SuppressWarnings("unused")
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         log.info("{} has hit phase: {}!", MOD_NAME, event.getModState().toString());
         proxy.init(event);
     }
 
+    @SuppressWarnings("unused")
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         log.info("{} has hit phase: {}!", MOD_NAME, event.getModState().toString());
