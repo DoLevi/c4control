@@ -37,7 +37,7 @@ public class ItemDirect extends ItemBase {
                 entrepreneur.startCharge();
 
                 playerIn.sendMessage(new TextComponentString(
-                        String.format("Starting to charge from %s§mM§r ...",
+                        String.format("Starting to charge from %.2f§mM§r ...",
                                 entrepreneur.getActiveChargeValue())));
             }
             return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
@@ -59,13 +59,11 @@ public class ItemDirect extends ItemBase {
                 C4ControlPacketHandler.sendChargeToClient((EntityPlayerMP) entityLiving,
                         entrepreneur.getChargeMultiplier(), entrepreneur.getActiveChargeValue());
 
-                String chargeValueDiff = String.format("%.2f",
+                String chargeMessage = String.format("Charged to %.2f§mM§r [%.2f§mM§r].",
+                        entrepreneur.getActiveChargeValue(),
                         entrepreneur.getActiveChargeValue() - previousChargeValue);
-                String chargeMessage = String.format("Charged to %s§mM§r [%s§mM§r].",
-                        entrepreneur.getActiveChargeValue(), chargeValueDiff);
-                String damageMessage = String.format("Expected damage: %s",
+                String damageMessage = String.format("Expected damage: %.2f",
                         entrepreneur.getExpectedDamage());
-
 
                 entityLiving.sendMessage(new TextComponentString(chargeMessage));
                 entityLiving.sendMessage(new TextComponentString(damageMessage));
