@@ -8,6 +8,10 @@ public interface IEntrepreneur {
      */
     double DMG_CALC_A_CONST = Math.pow(300_000 / Math.pow(500, 20), 1 / 19f);
     double DMG_CALC_B_CONST = 1 / Math.log(Math.sqrt(500 * DMG_CALC_A_CONST));
+    /**
+     * This value prevents the result fo the logarithmic damage calculation from dropping below zero
+     */
+    float MIN_CHARGE_VALUE = (float) Math.pow(300_000 / Math.pow(500, 20), - 1 / 19f);
 
     float DEFAULT_ACCOUNT_BALANCE = 10_000f;
     float DEFAULT_CHARGE_MULTIPLIER = 100f;

@@ -89,7 +89,7 @@ public class Entrepreneur implements IEntrepreneur {
         float addedChargeValue = nanosCharged / 1_000_000_000f * effectiveChargeMultiplier;
 
         float attemptedChargeValue = activeChargeValue + addedChargeValue;
-        // Minimum charge value is one, maximum charge value may not exceed account balance
-        return Math.max(1, Math.min(attemptedChargeValue, accountBalance));
+        // Attempted charge must be at least MIN and at most the account balance
+        return Math.max(MIN_CHARGE_VALUE, Math.min(attemptedChargeValue, accountBalance));
     }
 }
