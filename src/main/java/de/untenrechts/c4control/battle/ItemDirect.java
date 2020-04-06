@@ -1,6 +1,5 @@
 package de.untenrechts.c4control.battle;
 
-import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
 import de.untenrechts.c4control.network.C4ControlPacketHandler;
 import de.untenrechts.c4control.registration.ItemBase;
@@ -8,7 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -17,6 +15,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ItemDirect extends ItemBase {
 
@@ -28,10 +27,10 @@ public class ItemDirect extends ItemBase {
     @Nonnull
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn) {
-        IEntrepreneur entrepreneur = playerIn.getCapability(EntrepreneurProvider.entrepreneur, null);
-        Item usedItem = playerIn.getHeldItem(handIn).getItem();
+        Optional<IEntrepreneur> entrepreneurOpt = IEntrepreneur.getActiveEntrepreneur(playerIn);
 
-        if (entrepreneur.isEntrepreneur() && usedItem instanceof ItemDirect) {
+        if (entrepreneurOpt.isPresent() && playerIn.getHeldItem(handIn).getItem() instanceof ItemDirect) {
+            IEntrepreneur entrepreneur = entrepreneurOpt.get();
             playerIn.setActiveHand(handIn);
             if (!worldIn.isRemote) {
                 entrepreneur.startCharge();
@@ -48,11 +47,11 @@ public class ItemDirect extends ItemBase {
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-        IEntrepreneur entrepreneur = entityLiving.getCapability(EntrepreneurProvider.entrepreneur, null);
-        Item usedItem = stack.getItem();
+        Optional<IEntrepreneur> entrepreneurOpt = IEntrepreneur.getActiveEntrepreneur(entityLiving);
 
-        if (entrepreneur.isEntrepreneur() && usedItem instanceof ItemDirect) {
+        if (entrepreneurOpt.isPresent() && stack.getItem() instanceof ItemDirect) {
             if (!worldIn.isRemote) {
+                IEntrepreneur entrepreneur = entrepreneurOpt.get();
                 float previousChargeValue = entrepreneur.getActiveChargeValue();
 
                 entrepreneur.stopCharge();

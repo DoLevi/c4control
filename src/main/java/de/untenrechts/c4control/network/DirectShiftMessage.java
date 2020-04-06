@@ -1,6 +1,5 @@
 package de.untenrechts.c4control.network;
 
-import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,6 +19,7 @@ public class DirectShiftMessage implements IMessage {
     private UUID entityPlayerUUID;
     private boolean newShiftState;
 
+    @SuppressWarnings("unused")
     public DirectShiftMessage() {
     }
 
@@ -31,8 +31,10 @@ public class DirectShiftMessage implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         NBTTagCompound tag = ByteBufUtils.readTag(buf);
-        entityPlayerUUID = tag.getUniqueId(ENTITY_ID_KEY);
-        newShiftState = tag.getBoolean(NEW_SHIFT_STATE_KEY);
+        if (tag != null) {
+            entityPlayerUUID = tag.getUniqueId(ENTITY_ID_KEY);
+            newShiftState = tag.getBoolean(NEW_SHIFT_STATE_KEY);
+        }
     }
 
     @Override
@@ -50,9 +52,8 @@ public class DirectShiftMessage implements IMessage {
         public IMessage onMessage(DirectShiftMessage message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().player;
 
-            IEntrepreneur entrepreneur
-                    = player.getCapability(EntrepreneurProvider.entrepreneur, null);
-            entrepreneur.setDischargeEnabled(message.newShiftState);
+            IEntrepreneur.getActiveEntrepreneur(player)
+                    .ifPresent(entrepreneur -> entrepreneur.setDischargeEnabled(message.newShiftState));
 
             // no response
             return null;

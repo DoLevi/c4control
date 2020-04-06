@@ -1,6 +1,5 @@
 package de.untenrechts.c4control.network;
 
-import de.untenrechts.c4control.entrepreneur.EntrepreneurProvider;
 import de.untenrechts.c4control.entrepreneur.IEntrepreneur;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -10,6 +9,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import java.util.Optional;
 
 public class DirectChargeMessage implements IMessage {
 
@@ -21,6 +22,7 @@ public class DirectChargeMessage implements IMessage {
     private float chargeMultiplier;
     private float activeChargeValue;
 
+    @SuppressWarnings("unused")
     public DirectChargeMessage() {
     }
 
@@ -33,9 +35,11 @@ public class DirectChargeMessage implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         NBTTagCompound tag = ByteBufUtils.readTag(buf);
-        entityPlayerID = tag.getInteger(ENTITY_ID_KEY);
-        chargeMultiplier = tag.getFloat(CHARGE_MULTIPLIER_KEY);
-        activeChargeValue = tag.getFloat(ACTIVE_CHARGE_VALUE);
+        if (tag != null) {
+            entityPlayerID = tag.getInteger(ENTITY_ID_KEY);
+            chargeMultiplier = tag.getFloat(CHARGE_MULTIPLIER_KEY);
+            activeChargeValue = tag.getFloat(ACTIVE_CHARGE_VALUE);
+        }
     }
 
     @Override
@@ -56,10 +60,11 @@ public class DirectChargeMessage implements IMessage {
                     .world
                     .getEntityByID(message.entityPlayerID);
 
-            IEntrepreneur entrepreneur
-                    = targetEntity.getCapability(EntrepreneurProvider.entrepreneur, null);
-            entrepreneur.setChargeMultiplier(message.chargeMultiplier);
-            entrepreneur.setActiveChargeValue(message.activeChargeValue);
+            Optional<IEntrepreneur> entrepreneurOpt = IEntrepreneur.getActiveEntrepreneur(targetEntity);
+            entrepreneurOpt.ifPresent(entrepreneur -> {
+                entrepreneur.setChargeMultiplier(message.chargeMultiplier);
+                entrepreneur.setActiveChargeValue(message.activeChargeValue);
+            });
 
             // no response
             return null;

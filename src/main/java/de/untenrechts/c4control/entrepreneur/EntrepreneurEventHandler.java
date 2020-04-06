@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public abstract class EntrepreneurEventHandler {
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (isEntrepreneur(event.player)) {
@@ -17,15 +18,15 @@ public abstract class EntrepreneurEventHandler {
         }
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onPlayerDirectAttack(LivingHurtEvent event) {
         Entity source = event.getSource().getTrueSource();
         Entity target = event.getEntityLiving();
 
         if (source != null && isC4AttackEvent(source, target)) {
-            IEntrepreneur sourceEntrepreneur
-                    = source.getCapability(EntrepreneurProvider.entrepreneur, null);
-            event.setAmount(sourceEntrepreneur.getExpectedDamage());
+            IEntrepreneur.getActiveEntrepreneur(source)
+                    .ifPresent(entrepreneur -> event.setAmount(entrepreneur.getExpectedDamage()));
         }
     }
 
@@ -36,9 +37,7 @@ public abstract class EntrepreneurEventHandler {
         return false;
     }
 
-    private static boolean isEntrepreneur(Entity entrepreneurCandidate) {
-        IEntrepreneur entrepreneur
-                = entrepreneurCandidate.getCapability(EntrepreneurProvider.entrepreneur, null);
-        return entrepreneur != null && entrepreneur.isEntrepreneur();
+    private static boolean isEntrepreneur(Entity entity) {
+        return IEntrepreneur.getActiveEntrepreneur(entity).isPresent();
     }
 }
